@@ -1,6 +1,7 @@
 // src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -10,20 +11,18 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('http://localhost:4000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token); // Store the JWT token
-            navigate('/dashboard'); // Redirect to Dashboard
-        } else {
-            alert('Login failed! Please check your credentials.');
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/login', {
+                username,
+                password,
+            });
+            
+            // Store the JWT token in local storage
+            localStorage.setItem('token', response.data.token);
+            navigate('/Dashboard'); // Redirect to Dashboard
+        } catch (error) {
+            // Handle errors and alert the user
+            alert(error.response?.data.message || 'Login failed! Please check your credentials.');
         }
     };
 

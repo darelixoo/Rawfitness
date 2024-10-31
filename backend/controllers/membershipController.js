@@ -17,11 +17,20 @@ exports.buyMembership = async (req, res) => {
     else if (membershipType === '3 months') endDate.setMonth(startDate.getMonth() + 3);
     else if (membershipType === '6 months') endDate.setMonth(startDate.getMonth() + 6);
     else if (membershipType === '1 year') endDate.setFullYear(startDate.getFullYear() + 1);
-    
-    // Create membership
-    const membership = new Membership({ username, membershipType, startDate, endDate });
-    
+
     try {
+        // Check if there is an active membership for the user
+        const activeMembership = await Membership.findOne({
+            username,
+            endDate: { $gte: new Date() } // Membership is active if endDate is in the future
+        });
+
+        if (activeMembership) {
+            return res.status(400).json({ message: "Membership already active." });
+        }
+
+        // Create membership
+        const membership = new Membership({ username, membershipType, startDate, endDate });
         await membership.save();
         res.status(201).json({ message: "Membership purchased successfully." });
     } catch (error) {
