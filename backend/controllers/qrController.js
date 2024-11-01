@@ -1,6 +1,6 @@
 const QRCode = require('qrcode');
 const Membership = require('../models/Membership');
-const QRCodeModel = require('../models/QRCode');
+//const QRCodeModel = require('../models/QRCode');
 
 exports.getQR = async (req, res) => {
     try {
@@ -23,10 +23,7 @@ exports.getQR = async (req, res) => {
         const qrCode = await QRCode.toDataURL(JSON.stringify(qrData));
         console.log("Generated QR Code:", qrCode);
 
-        // Save QR Code in database
-        await QRCodeModel.create({ username: req.user.username, qrCode })
-            .then(() => console.log("QR Code saved successfully"))
-            .catch(err => console.error("Error saving QR Code:", err));
+     
 
         res.json({ qrCode });
     } catch (error) {

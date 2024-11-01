@@ -1,6 +1,5 @@
-// src/App.jsx
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -15,6 +14,20 @@ const PrivateRoute = ({ children }) => {
     return token ? children : <Navigate to="/login" />;
 };
 
+// Redirect handler component
+const RedirectIfLoggedIn = ({ children }) => {
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/dashboard'); // Redirect to dashboard if logged in
+        }
+    }, [navigate]);
+    
+    return children;
+};
+
 const App = () => {
     return (
         <Router>
@@ -22,8 +35,8 @@ const App = () => {
                 <Navbar />
                 <main className="flex-grow">
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
+                        <Route path="/" element={<RedirectIfLoggedIn><Home /></RedirectIfLoggedIn>} />
+                        <Route path="/login" element={<RedirectIfLoggedIn><Login /></RedirectIfLoggedIn>} />
                         <Route path="/membership" element={<Membership />} />
                         <Route path="/register" element={<Register />} />
 
