@@ -6,6 +6,9 @@ ensuring secure and efficient access to the gym facilities.
 
 Technical Stack
 Frontend: The user interface is developed using React.js, providing a responsive and interactive experience.
+
 Backend: The server is built with Node.js and Express.js, handling API requests and managing user sessions.
+
 Database: MongoDB is used for storing user and membership data, allowing for efficient data retrieval and manipulation.
+
 Security: JSON Web Tokens (JWT) are employed for secure user authentication and session management.
