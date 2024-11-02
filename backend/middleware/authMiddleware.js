@@ -1,7 +1,7 @@
 // middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = "SuperSecure123";
+
 
 module.exports = (req, res, next) => {
     const authHeader = req.header('Authorization');
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     console.log("Token Received:", token);
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log("Decoded Token:", decoded);
         
 

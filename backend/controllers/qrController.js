@@ -1,13 +1,12 @@
 const QRCode = require('qrcode');
 const Membership = require('../models/Membership');
-//const QRCodeModel = require('../models/QRCode');
 
 exports.getQR = async (req, res) => {
     try {
-        // Sirf valid membership fetch karein
+        // Fetch valid membership
         const membership = await Membership.findOne({ 
             username: req.user.username, 
-            endDate: { $gt: new Date() }  // Filter to get only active membership
+            endDate: { $gt: new Date() }  // Only active membership
         });
 
         if (!membership) {
@@ -17,13 +16,12 @@ exports.getQR = async (req, res) => {
         const qrData = {
             username: req.user.username,
             membershipType: membership.membershipType,
-            validUntil: membership.endDate
+            validUntil: membership.endDate,
+            generatedAt: new Date().toISOString()  // Add generated timestamp for expiry check
         };
 
         const qrCode = await QRCode.toDataURL(JSON.stringify(qrData));
         console.log("Generated QR Code:", qrCode);
-
-     
 
         res.json({ qrCode });
     } catch (error) {

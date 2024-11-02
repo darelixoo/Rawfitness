@@ -1,62 +1,74 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import QrScanner from 'react-qr-scanner';
 import axios from 'axios';
 
 const ScanPoint = () => {
-    const [data, setData] = useState('');
     const [message, setMessage] = useState('');
     const [isScanning, setIsScanning] = useState(false); // Prevents multiple scans
+    const timeoutRef = useRef(null); // For handling timeout reset
+    const scannerRef = useRef(null); // For forcing scanner reset
 
     const handleScan = useCallback(
         async (scannedData) => {
-            // Check for valid scanned data and prevent double scans
-            if (scannedData && scannedData.text && scannedData.text !== data) {
-                console.log("Scanned Data: ", scannedData.text); // Log scanned data
-                setData(scannedData.text); // Update the scanned data
-                setIsScanning(true); // Lock scanning
+            if (scannedData && scannedData.text && !isScanning) {
+                console.log("Scanned Data: ", scannedData.text);
+                setIsScanning(true);
 
                 try {
                     const response = await axios.post('http://localhost:5000/api/scan', {
                         qrCode: scannedData.text,
                     });
-                    console.log("API Response: ", response); // Log API response
+                    console.log("API Response: ", response);
                     setMessage(response.data.message || 'Scan successful.');
 
-                    // Reset state after a delay to allow for another scan
-                    setTimeout(() => {
-                        setMessage(''); // Clear message
-                        setData(''); // Clear scanned data for the next scan
-                        setIsScanning(false); // Unlock scanning
+                    // Force reset scanner
+                    if (scannerRef.current) {
+                        scannerRef.current.state.delay = 0;
+                        setTimeout(() => {
+                            scannerRef.current.state.delay = 1000; // Reset delay after brief pause
+                        }, 500);
+                    }
+
+                    // Clear message and scanning lock
+                    timeoutRef.current = setTimeout(() => {
+                        setMessage('');
+                        setIsScanning(false);
                     }, 1500);
                 } catch (error) {
                     console.error('Error during API call:', error);
-                    const errorMsg = error.response?.data?.message || 'An error occurred while scanning.';
-                    setMessage(errorMsg);
+                    setMessage(error.response?.data?.message || 'An error occurred while scanning.');
 
-                    // Reset state after a delay
-                    setTimeout(() => {
-                        setMessage(''); // Clear message
-                        setData(''); // Clear scanned data for the next scan
-                        setIsScanning(false); // Unlock scanning
+                    // Clear message and scanning lock
+                    timeoutRef.current = setTimeout(() => {
+                        setMessage('');
+                        setIsScanning(false);
                     }, 1500);
                 }
             }
         },
-        [data] // Dependencies
+        [isScanning]
     );
 
     const handleError = (err) => {
         console.error('Scan error:', err);
     };
 
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        };
+    }, []);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
             <h2 className="text-3xl font-bold text-gray-800 mb-4">Scan Your QR Code</h2>
             <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
                 <QrScanner
-                    delay={300}
+                    ref={scannerRef}
+                    delay={1000}  // Increased delay to 1 second
                     onError={handleError}
-                    onScan={isScanning ? () => {} : handleScan} // Prevent scanning if already scanning
+                    onScan={handleScan}
                     style={{ width: '100%' }}
                 />
             </div>

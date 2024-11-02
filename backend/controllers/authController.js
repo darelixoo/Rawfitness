@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-const JWT_SECRET = "SuperSecure123";
+//const JWT_SECRET = "SuperSecure123";
 
 exports.register = async (req, res) => {
     const { username, password, mobile } = req.body;
@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
     }
 
     // Assuming user.username is available after authentication
-    const token = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 
     res.json({ token });

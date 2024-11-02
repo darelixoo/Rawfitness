@@ -7,7 +7,7 @@ exports.buyMembership = async (req, res) => {
     if (!membershipType) {
         return res.status(400).json({ message: "Membership type is required" });
     }
-    const username = req.user.username; // Assuming middleware sets req.user from token
+    const username = req.user.username; //  middleware sets req.user from token
 
     const startDate = new Date();
     const endDate = new Date();
@@ -22,7 +22,7 @@ exports.buyMembership = async (req, res) => {
         // Check if there is an active membership for the user
         const activeMembership = await Membership.findOne({
             username,
-            endDate: { $gte: new Date() } // Membership is active if endDate is in the future
+            endDate: { $gte: new Date() } 
         });
 
         if (activeMembership) {
