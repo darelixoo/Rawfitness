@@ -4,9 +4,9 @@ import axios from 'axios';
 
 const ScanPoint = () => {
     const [message, setMessage] = useState('');
-    const [isScanning, setIsScanning] = useState(false); // Prevents multiple scans
-    const timeoutRef = useRef(null); // For handling timeout reset
-    const scannerRef = useRef(null); // For forcing scanner reset
+    const [isScanning, setIsScanning] = useState(false); // prevents multiple scans
+    const timeoutRef = useRef(null); // for handling timeout reset
+    const scannerRef = useRef(null); // for forcing scanner reset
 
     const handleScan = useCallback(
         async (scannedData) => {
@@ -21,15 +21,15 @@ const ScanPoint = () => {
                     console.log("API Response: ", response);
                     setMessage(response.data.message || 'Scan successful.');
 
-                    // Force reset scanner
+                    // force reset scanner
                     if (scannerRef.current) {
                         scannerRef.current.state.delay = 0;
                         setTimeout(() => {
-                            scannerRef.current.state.delay = 1000; // Reset delay after brief pause
+                            scannerRef.current.state.delay = 1000; // reset delay after pause
                         }, 500);
                     }
 
-                    // Clear message and scanning lock
+                    // clear message and scanning lock
                     timeoutRef.current = setTimeout(() => {
                         setMessage('');
                         setIsScanning(false);
@@ -53,7 +53,7 @@ const ScanPoint = () => {
         console.error('Scan error:', err);
     };
 
-    // Cleanup timeout on unmount
+    // cleanup timeout on unmount
     useEffect(() => {
         return () => {
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
