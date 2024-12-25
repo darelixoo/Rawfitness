@@ -38,7 +38,7 @@ const ScanPoint = () => {
                     console.error('Error during API call:', error);
                     setMessage(error.response?.data?.message || 'An error occurred while scanning.');
 
-                    // Clear message and scanning lock
+                    // clear message and scanning lock
                     timeoutRef.current = setTimeout(() => {
                         setMessage('');
                         setIsScanning(false);
