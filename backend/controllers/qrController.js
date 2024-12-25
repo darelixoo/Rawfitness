@@ -3,10 +3,10 @@ const Membership = require('../models/Membership');
 
 exports.getQR = async (req, res) => {
     try {
-        // Fetch valid membership
+        // fetch valid membership
         const membership = await Membership.findOne({ 
             username: req.user.username, 
-            endDate: { $gt: new Date() }  // Only active membership
+            endDate: { $gt: new Date() }  // only active membership
         });
 
         if (!membership) {
@@ -17,7 +17,7 @@ exports.getQR = async (req, res) => {
             username: req.user.username,
             membershipType: membership.membershipType,
             validUntil: membership.endDate,
-            generatedAt: new Date().toISOString()  // Add generated timestamp for expiry check
+            generatedAt: new Date().toISOString()  // add generated timestamp for expiry check
         };
 
         const qrCode = await QRCode.toDataURL(JSON.stringify(qrData));
