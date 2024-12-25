@@ -17,9 +17,9 @@ const Login = () => {
                 password,
             });
             
-            // Store the JWT token in local storage
+            // store the jwt token in local storage
             localStorage.setItem('token', response.data.token);
-            navigate('/Dashboard'); // Redirect to Dashboard
+            navigate('/Dashboard'); // redirect to dashboard
         } catch (error) {
             // Handle errors and alert the user
             alert(error.response?.data.message || 'Login failed! Please check your credentials.');
