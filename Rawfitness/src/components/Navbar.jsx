@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token'); // Check if user is logged in
+    const token = localStorage.getItem('token'); // check if user is logged in
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Remove token from local storage
+        localStorage.removeItem('token'); // remove token from local storage
         navigate('/login'); // Redirect to Login page
     };
 
