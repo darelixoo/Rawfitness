@@ -10,9 +10,9 @@ const Membership = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is logged in by checking token
+        // check if user is logged in by checking token
         const token = localStorage.getItem('token');
-        setIsLoggedIn(!!token);
+        setIsLoggedIn(!!token);  //checking if token is undefined
     }, []);
 
     const handleBuyMembership = async (membershipType) => {
@@ -30,7 +30,7 @@ const Membership = () => {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setSuccessMessage(response.data.message);
-            setTimeout(() => navigate('/dashboard'), 1500); // Redirect after 1.5 seconds
+            setTimeout(() => navigate('/dashboard'), 1500); // redirect after 1.5 seconds
         } catch (error) {
             setErrorMessage(error.response?.data?.message || "Error purchasing membership.");
         }
