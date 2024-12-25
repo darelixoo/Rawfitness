@@ -7,7 +7,7 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/" element={<ScanPoint />} />
-                {/* Yahan aur routes add kar sakte hain agar zaroorat ho */}
+                
             </Routes>
         </Router>
     );
