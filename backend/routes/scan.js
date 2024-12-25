@@ -4,7 +4,7 @@ const { scanQRCode } = require('../controllers/scanController');
 
 const router = express.Router();
 
-router.post('/scan', scanQRCode); // Create a POST endpoint to scan the QR code
+router.post('/scan', scanQRCode); //to scan the QR code
 
 module.exports = router;
 
