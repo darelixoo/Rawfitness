@@ -10,7 +10,7 @@ import Dashboard from './pages/Dashboard';
 
 // Private Route component to protect the Dashboard
 const PrivateRoute = ({ children }) => {
-    const token = localStorage.getItem('token'); // Check if token is in localStorage
+    const token = localStorage.getItem('token'); // check if token is in localStorage
     return token ? children : <Navigate to="/login" />;
 };
 
@@ -21,7 +21,7 @@ const RedirectIfLoggedIn = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            navigate('/dashboard'); // Redirect to dashboard if logged in
+            navigate('/dashboard'); // redirect to dashboard if logged in
         }
     }, [navigate]);
     
