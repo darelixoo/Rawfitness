@@ -8,13 +8,13 @@ import Register from './pages/Register';
 import Membership from './pages/Membership';
 import Dashboard from './pages/Dashboard';
 
-// Private Route component to protect the Dashboard
+// private route component to protect the dashboard
 const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('token'); // check if token is in localStorage
     return token ? children : <Navigate to="/login" />;
 };
 
-// Redirect handler component
+// redirect handler component
 const RedirectIfLoggedIn = ({ children }) => {
     const navigate = useNavigate();
     
