@@ -3,18 +3,18 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Dashboard = () => {
-    const username = localStorage.getItem('username'); // Get username from localStorage
+    const username = localStorage.getItem('username'); // get username from localStorage
     const [qrCode, setQrCode] = useState(null);
 
     const handleGenerateQR = async () => {
         try {
-            const token = localStorage.getItem('token'); // Get JWT token for authorization
+            const token = localStorage.getItem('token'); // get jwt token for authorization
             const response = await axios.get('http://localhost:5000/api/qr/generate', {
                 headers: {
                     Authorization: `Bearer ${token}`, // Pass token in headers
                 },
             });
-            setQrCode(response.data.qrCode); // Set QR code data
+            setQrCode(response.data.qrCode); // set qr code data
         } catch (error) {
             alert(error.response.data.message || 'Error generating QR code!');
         }
