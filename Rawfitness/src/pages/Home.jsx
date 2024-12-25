@@ -5,7 +5,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const handleGetStarted = () => {
-        navigate('/membership'); // Redirects to Membership page
+        navigate('/membership'); // redirects to membership page
     };
 
     return (
