@@ -2,7 +2,7 @@
 const express = require('express');
 const { buyMembership } = require('../controllers/membershipController');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware'); // Ensure user is logged in
+const authMiddleware = require('../middleware/authMiddleware'); // ensure user is logged in
 
 router.post('/buy', authMiddleware, buyMembership);
 
