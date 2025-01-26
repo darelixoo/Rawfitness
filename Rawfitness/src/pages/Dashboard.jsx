@@ -1,9 +1,9 @@
-// src/pages/Dashboard.jsx
+//src/pages/Dashboard.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const Dashboard = () => {
-    const username = localStorage.getItem('username'); // get username from localStorage
+    const username = localStorage.getItem('username'); //get username from localStorage
     const [qrCode, setQrCode] = useState(null);
 
     const handleGenerateQR = async () => {
@@ -11,10 +11,10 @@ const Dashboard = () => {
             const token = localStorage.getItem('token'); // get jwt token for authorization
             const response = await axios.get('http://localhost:5000/api/qr/generate', {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Pass token in headers
+                    Authorization: `Bearer ${token}`, //pass token in headers
                 },
             });
-            setQrCode(response.data.qrCode); // set qr code data
+            setQrCode(response.data.qrCode); //qr code data
         } catch (error) {
             alert(error.response.data.message || 'Error generating QR code!');
         }
